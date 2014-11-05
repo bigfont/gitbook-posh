@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ﻿cd ~\Documents\GitHub\gitbook-posh
-=======
-﻿cd C:\Users\BigFont\Documents\GitHub\practice-repo
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
 
 # maintenance
 # -------------------
@@ -62,13 +58,8 @@ git log --pretty=oneline recovery-branch2 -5
 # and other contributors might have to rebase onto the new commit
 
 # add a massive tarball
-<<<<<<< HEAD
 curl http://kernel.org/pub/software/scm/git/git-1.8.2.3.tar.gz -OutFile git.tgz
 git add git.tgz
-=======
-curl http://kernel.org/pub/software/scm/git/git-1.8.2.3.tar.gz -OutFile git4.tgz
-git add git4.tgz
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
 git commit -m "Added git tarball again.";
 
 # remove the tarbal from the working tree
@@ -77,49 +68,31 @@ git commit -m "oops - removed large tarball."
 
 # do garbage collection to see how much space we're using
 # the git rm didn't remove the large file from our history
-<<<<<<< HEAD
 # size-pack is still large
 git gc
 git count-objects -v
 
 # find the large file by first inspecting the pack
-=======
-git gc
-git count-objects -v
-
-# lets find the large file by first inspecting the pack
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
 dir -Recurse .git/objects/pack
 
 # then sorting the idx to find the large blob
 # -------------------------------
 
 # put the idx file into $vp
-<<<<<<< HEAD
 $idxPath = ".\.git\objects\pack\pack-b761da8be3778a08157371d80776238e28bfa11e.idx"
 $vp = git verify-pack -v $idxPath
-=======
-$idx = ".\.git\objects\pack\pack-e3aa4ad72d76e52dc538d6d8c9e3de95b523957f.idx"
-$vp = git verify-pack -v $idx
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
 
 # remove the summary values that have a colon in their string
 $vp = $vp | where { $_ -notlike "*:*" }
 
-<<<<<<< HEAD
 # make into tab separated values (x2) for consistency and readability
 # because its currently space separated sometimes with one and othertimes three spaces
-=======
-# make into 2x tab separated values for consistency and readability
-# because its currently space separated with sometimes one and sometimes three spaces
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
 $vp = $vp -replace "\s{1,}", "`t`t" 
 
 # sort and select
 $vp = $vp | sort { [int]($_ -split "`t`t")[2] }
 $vp | select -Last 3
 
-<<<<<<< HEAD
 # now that we know the blog SHA, we can look at its file
 git rev-list --objects --all | where { $_ -like '2cc0dd2*' }
 
@@ -144,16 +117,5 @@ git count-objects -v
 # size should now be small again too
 git prune --expire now
 git count-objects -v
-=======
-# then
-git rev-list --objects --all | where { $_ -like '438e5*' }
 
-
-# then
-git filter-branch --index-filter 'git rm --cached --ignore-unmatch git.tgz'
-rm -Recurse -Force .\.git\refs\original
-rm -Recurse -Force .git\logs
-git gc
-git count-objects -v
-git prune --expire '2014-10-30'
->>>>>>> 3a1b24cbb54609193142c245292dcf09babccf90
+# TODO How do we remove the large file from the remote if we've already pushed?
