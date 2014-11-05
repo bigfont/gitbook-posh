@@ -1,0 +1,6 @@
+﻿git help config
+git config --system --list
+git config --global --list
+git config --list
+git config core.editor notepad
+git config core.editor
