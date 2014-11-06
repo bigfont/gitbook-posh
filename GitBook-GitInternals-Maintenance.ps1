@@ -52,21 +52,21 @@ git log -g -5
 
 # now lets recover by creating a branch that points to our most recent dangling commit
 # this will probably be HEAD@{1}, we use its SHA
-git branch recovery-branch 1955deb
-git log --oneline recovery-branch -5
+git branch recover-branch 1955deb
+git log --oneline recover-branch -5
 # cool, we recovered!
 
 # here's a harder scenario: 
 # we delete the recover-branch and we delete reflogs
-git branch -D recovery-branch3
+git branch -D recover-branch
 rm -r -force .git/logs
 
 # to recover our dangling, lost commits, 
 # we use a database integrity check to find dangling commit SHAs
 # so we can recover what is dangling
 git fsck --full
-git branch recovery-branch 894b1f
-git log --oneline recovery-branch -5
+git branch recover-branch 894b1f
+git log --oneline recover-branch -5
 
 # removing objects
 # -------------------------
