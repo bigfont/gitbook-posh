@@ -18,51 +18,55 @@ cat .git/packed-refs
 # data recovery
 # --------------------
 cls
-git log --pretty=oneline -10
+git log --pretty=oneline
 
-# make some arbitrary changes and commits
+# make a few arbitrary changes and commits
 ni practice.txt -ItemType file
 git add practice.txt
 git commit -m "One"
+
 ac practice.txt "Here"
 git add practice.txt
 git commit -m "Two"
+
 ac practice.txt "is"
 git add practice.txt
 git commit -m "Three"
+
 ac practice.txt "Shaun"
 git add practice.txt
 git commit -m "Four"
+
 git log --oneline -5
 
 # then roll the branch back via a hard reset to your first commit
-git reset --hard d162968
+git reset --hard e6153a8
 
-# our most recent commits are now dangling, lost
+# our most recent commits are now dangling
 # no branch reaches them
 git log --oneline -5
 
-# lets reconnect with our lost commits, there are two ways:
+# lets reconnect with our lost commits, there are two ways to find them:
 git reflog
 git log -g -5
 
 # now lets recover by creating a branch that points to our most recent dangling commit
-# cool, we recovered!
-git branch recovery-branch 894b1f3
+# this will probably be HEAD@{1}, we use its SHA
+git branch recovery-branch 1955deb
 git log --oneline recovery-branch -5
+# cool, we recovered!
 
 # here's a harder scenario: 
 # we delete the recover-branch and we delete reflogs
-git branch -D recovery-branch
+git branch -D recovery-branch3
 rm -r -force .git/logs
 
 # to recover our dangling, lost commits, 
-# use a database integrity check to find the commit SHAs
-# The fsck --full displays dangling commits
+# we use a database integrity check to find dangling commit SHAs
 # so we can recover what is dangling
 git fsck --full
-git branch recovery-branch2 894b1f
-git log --oneline recovery-branch2 -5
+git branch recovery-branch 894b1f
+git log --oneline recovery-branch -5
 
 # removing objects
 # -------------------------
@@ -91,11 +95,11 @@ git count-objects -v
 dir -Recurse .git/objects/pack
 
 # next, sort the index (idx) to find the large blob
-# note that this is more verbose in PowerShell than it is in bash, 
+# note, this is more verbose in PowerShell than it is in bash, 
 # because PS uses objects whereas bash processes text directly
 
 # store the contents of the index in the $vp variable
-$idxPath = ".\.git\objects\pack\pack-8ccb67f44b4b3831087e162f05b610534de97542.idx"
+$idxPath = ".\.git\objects\pack\pack-f7911c60917f84551839d7f81422b676e39fc5b4.idx"
 $vp = git verify-pack -v $idxPath
 
 # remove summary values from the index content (summary lines have a colon)
