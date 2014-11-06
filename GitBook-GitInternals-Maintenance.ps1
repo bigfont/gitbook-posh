@@ -1,4 +1,4 @@
-﻿cd ~\Documents\GitHub\gitbook-posh
+cd ~\Documents\GitHub\gitbook-posh
 
 # maintenance
 # -------------------
@@ -10,7 +10,7 @@ git gc --auto
 dir .git/refs -Recurse -File
 
 # after running gc, .git/refs will be empty
-# because git will have put the refs into .git/packed-refs
+# git will have put the refs into .git/packed-refs
 git gc
 dir .git/refs -Recurse -File
 cat .git/packed-refs 
