@@ -141,4 +141,6 @@ git count-objects -v
 git prune --expire now
 git count-objects -v
 
-# TODO How do we remove the large file from the remote if we've already pushed?
+# to remove the large file from the remote also, 
+# once we're happy with our local repo, run the following:
+git push --force
