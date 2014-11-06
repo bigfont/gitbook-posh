@@ -4,9 +4,8 @@
 # Merging and rebasing lead to the same snapshot result;
 # the only difference being that rebasing leads to a *cleaner history*.
 
-
 # checkout a new branch
-git checkout -b rebase-me
+git checkout -b experiment
 
 # do some work on it
 ni -t f work.txt
@@ -26,14 +25,14 @@ git add bugfix.txt
 git commit -m "Do a quick bugfix."
 
 # the branches have diverged
-git log --oneline --graph --branches master rebase-me -8
+git log --oneline --graph master experiment -8
 
-# lets rebase master onto rebase-me
-git checkout rebase-me
+# lets rebase master onto experiment
+git checkout experiment
 git rebase master 
 
 git log --oneline --graph  -8
 
-# now lets merge rebase-me into master
+# now lets merge experiment into master
 git checkout master
-git merge rebase-me
+git merge experiment
