@@ -20,42 +20,56 @@ cat .git/packed-refs
 cls
 git log --pretty=oneline -10
 
-# make some changes and commits
-# then roll the branch back via a hard reset
+# make some arbitrary changes and commits
+ni practice.txt -ItemType file
+git add practice.txt
+git commit -m "One"
+ac practice.txt "Here"
+git add practice.txt
+git commit -m "Two"
+ac practice.txt "is"
+git add practice.txt
+git commit -m "Three"
+ac practice.txt "Shaun"
+git add practice.txt
+git commit -m "Four"
+git log --oneline -5
 
-git reset --hard 15f57
-git log --pretty=oneline -5
+# then roll the branch back via a hard reset to your first commit
+git reset --hard d162968
 
-# oops, we've lots some commits that we want
-# lets find them
+# our most recent commits are now dangling, lost
+# no branch reaches them
+git log --oneline -5
 
+# lets reconnect with our lost commits, there are two ways:
 git reflog
 git log -g -5
 
-# now that we've found them, lets recover
-git branch recovery-branch 54e0f30
-git log --pretty=oneline recovery-branch -5
+# now lets recover by creating a branch that points to our most recent dangling commit
+# cool, we recovered!
+git branch recovery-branch 894b1f3
+git log --oneline recovery-branch -5
 
-# but if we delete the recover-branch
-# and we delete reflogs, 
-# then the reflog will be empty 
+# here's a harder scenario: 
+# we delete the recover-branch and we delete reflogs
 git branch -D recovery-branch
 rm -r -force .git/logs
 
-# then we must use a database integrity check
-# to recover the lost commits
-# because it will display our "dangling commits"
-# and we can recover from there
+# to recover our dangling, lost commits, 
+# use a database integrity check to find the commit SHAs
+# The fsck --full displays dangling commits
+# so we can recover what is dangling
 git fsck --full
-git branch recovery-branch2 54e0f
-git log --pretty=oneline recovery-branch2 -5
+git branch recovery-branch2 894b1f
+git log --oneline recovery-branch2 -5
 
 # removing objects
 # -------------------------
 
 # note: the removing object process is destructive to commit history
-# it rewrites every commit object since the earliest tree you have to modify
-# and other contributors might have to rebase onto the new commit
+# it rewrites every commit object since the earliest tree you have to modify,
+# other contributors might have to rebase onto the new commit
 
 # add a massive tarball
 curl http://kernel.org/pub/software/scm/git/git-1.8.2.3.tar.gz -OutFile git.tgz
@@ -72,50 +86,56 @@ git commit -m "oops - removed large tarball."
 git gc
 git count-objects -v
 
-# find the large file by first inspecting the pack
+# find the large file
+# starting by inspecting the pack files
 dir -Recurse .git/objects/pack
 
-# then sorting the idx to find the large blob
-# -------------------------------
+# next, sort the index (idx) to find the large blob
+# note that this is more verbose in PowerShell than it is in bash, 
+# because PS uses objects whereas bash processes text directly
 
-# put the idx file into $vp
-$idxPath = ".\.git\objects\pack\pack-b761da8be3778a08157371d80776238e28bfa11e.idx"
+# store the contents of the index in the $vp variable
+$idxPath = ".\.git\objects\pack\pack-8ccb67f44b4b3831087e162f05b610534de97542.idx"
 $vp = git verify-pack -v $idxPath
 
-# remove the summary values that have a colon in their string
+# remove summary values from the index content (summary lines have a colon)
 $vp = $vp | where { $_ -notlike "*:*" }
 
-# make into tab separated values (x2) for consistency and readability
-# because its currently space separated sometimes with one and othertimes three spaces
-$vp = $vp -replace "\s{1,}", "`t`t" 
+# turn the index's list into tab separated values (x2) for consistency and readability
+# it's currently space separated, sometimes with one and othertimes three spaces between columns
+$vp = $vp -replace "\s{1,}", "`t`t"
 
-# sort and select
+# sort the index by file size (split on tab x2 and sort on the third column)
+# and select the largest three
 $vp = $vp | sort { [int]($_ -split "`t`t")[2] }
 $vp | select -Last 3
 
-# now that we know the blog SHA, we can look at its file
+# now that we know the massive blob's SHA, we can learn its file name
 git rev-list --objects --all | where { $_ -like '2cc0dd2*' }
 
-# see what commits modified this file
-git log --oneline --branches -- git.tgz
+# now that we know the name of the large file, 
+# we can see what commits modified it
+git log --oneline --branches -- practice/git.tgz
 
-# now that we know the large file's name, we can remove it
-# by rewriting all the commits downstream from when we first created the large file
+# now that we know the large file's name and the earliest commit that touched it, 
+# we can remove it by rewriting all the commits downstream from when we first created it
 # TODO how do we replace --all with a specific early commit??
-git filter-branch --index-filter 'git rm --cached --ignore-unmatch git.tgz' -- --all
+git filter-branch --index-filter 'git rm --cached --ignore-unmatch practice/git.tgz' -- --all
 
 # remove other stuff that still contains the large file
+# refs\original is like a backup
 rm -Recurse -Force .\.git\refs\original
 rm -Recurse -Force .\.git\logs
 
 # then repack the database and count objects
-# the pack-size should be small again
+# the pack-size should be small again; though, the size will still be large
 git gc
 git count-objects -v
 
-# expire now to remove the big object from our loose objects
-# size should now be small again too
+# use expire now to remove the big object from our loose objects
+# size should now be small again too; we've completely removed the massive blob
 git prune --expire now
 git count-objects -v
+
 
 # TODO How do we remove the large file from the remote if we've already pushed?
