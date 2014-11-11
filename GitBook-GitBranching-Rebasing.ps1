@@ -2,7 +2,7 @@
 # Rebasing is one of the two methods
 # for integrating changes from one branch into another.
 # Merging and rebasing lead to the same snapshot result;
-# the only difference being that rebasing leads to a *cleaner history*.
+# the advantage to rebasing is a *cleaner history*.
 
 # the basic rebase
 # ---------------------------
