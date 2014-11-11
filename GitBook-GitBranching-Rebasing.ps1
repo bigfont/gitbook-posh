@@ -132,5 +132,129 @@ without having to checkout the topic first.
 
 #>
 
+# now fast forward
 git checkout master
 git merge server
+
+# note the order of the commits on master
+git log --oneline --graph --all --decorate -12
+
+# remove the client and server branches
+# because all their changes are now in master
+
+git branch -D server
+git branch -D client
+
+# --------------------------------------------------------
+# DO NOT REBASE COMMITS THAT EXIST OUTSIDE YOUR REPOSITORY
+# --------------------------------------------------------
+
+<# 
+
+- Rebase abandons existing commits
+- and creates new ones that are similar but different.
+- If others have used those existing commits, 
+- then merging gets messy and they'll hate you.
+
+#>
+
+
+
+# create a file, 
+# commit and push
+ni rebase-hell.txt -t f
+git add rebase-hell.txt; 
+git commit -m "RP1"
+git push
+
+# to mimic collaborating, 
+# clone the current repo into a sibling directory
+git clone git@github.com:bigfont/gitbook-posh.git ..\gitbook-posh2
+
+# enter posh2
+cd ..\gitbook-posh2
+
+git log --oneline --decorate -1
+
+ac .\rebase-hell.txt "Some work from posh2."
+git add -A;
+git commit -m "RP2";
+
+ac .\rebase-hell.txt "Some more work from posh2."
+git add -A; 
+git commit -m "RP3";
+
+git log --oneline --decorate -3
+
+# return to original directory
+cd ..\gitbook-posh
+
+# do some more work
+git checkout -b someBranch
+ac .\rebase-hell.txt "Some work from original dir."
+git add rebase-hell.txt
+git commit -m "RP5"
+
+git log --oneline -5
+
+git checkout master
+ac .\rebase-hell.txt "Some more work from original dir."
+git add rebase-hell.txt
+git commit -m "RP4"
+
+git log --oneline --decorate -8
+
+git merge someBranch
+
+# fix merge conflicts
+ii .\rebase-hell.txt
+git add .\rebase-hell.txt
+git commit --amend -m "RP6"
+
+git log --oneline --graph --all --decorate -4
+
+# push all branches
+git push --all
+
+# return to the other directory
+cd ..\gitbook-posh2
+git pull
+git branch -r
+git checkout origin/someBranch
+
+git log --oneline --graph --decorate --all -6
+
+git checkout master
+git log --oneline --graph --decorate --all -6
+git status
+ii rebase-hell.txt
+git add rebase-hell.txt
+git commit -m "RP7"
+
+<# 
+
+master now looks like this
+RP1 < RP2 < RP3 < RP7
+
+origin/master looks like this
+RP1 < RP4 < RP6
+
+origin/someBranch looks like this
+RP1 < RP5
+
+#>
+
+git log --oneline --graph --decorate -7
+
+# switch back to the original dir to cause hell
+# by rebasing instead of merging
+
+cd ..\gitbook-posh
+git log --oneline --graph --decorate --all -8
+
+# roll back master
+git reset --hard HEAD~1
+
+git rebase someBranch master
+git rebase --continue
+ii rebase-hell.txt
