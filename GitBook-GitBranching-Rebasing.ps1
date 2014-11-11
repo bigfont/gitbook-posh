@@ -146,7 +146,7 @@ git branch -D server
 git branch -D client
 
 # --------------------------------------------------------
-# DO NOT REBASE COMMITS THAT EXIST OUTSIDE YOUR REPOSITORY
+# AVOID REBASING COMMITS THAT YOU'VE PUSHED (i.e THAT EXIST OUTSIDE YOUR REPOSITORY)
 # --------------------------------------------------------
 
 <# 
@@ -257,4 +257,28 @@ git reset --hard HEAD~1
 
 git rebase someBranch master
 git rebase --continue
+git log --oneline --graph --decorate --all -8
+
 ii rebase-hell.txt
+git add rebase-hell.txt
+git commit -m "RP4'"
+git log --oneline --graph --decorate --all -6
+
+git checkout master
+git merge someBranch
+
+git branch -D someBranch
+
+git push --force
+
+# switch directories
+# then fetch and merge by doing a pull
+
+cd ..\gitbook-posh2
+git pull
+git log --oneline --graph --decorate -10
+
+# a way to work with this
+# is to fetch and rebase instead of fetch and merge
+# we can do that with `git pull --rebase`
+# or with `git fetch; git rebase remote/branch;`
