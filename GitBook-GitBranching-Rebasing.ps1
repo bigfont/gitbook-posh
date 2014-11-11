@@ -132,5 +132,41 @@ without having to checkout the topic first.
 
 #>
 
+# now fast forward
 git checkout master
 git merge server
+
+# note the order of the commits on master
+git log --oneline --graph --all --decorate -12
+
+# remove the client and server branches
+# because all their changes are now in master
+
+git branch -D server
+git branch -D client
+
+# --------------------------------------------------------
+# DO NOT REBASE COMMITS THAT EXIST OUTSIDE YOUR REPOSITORY
+# --------------------------------------------------------
+
+<# 
+
+- Rebase abandons existing commits
+- and creates new ones that are similar but different.
+- If others have used those existing commits, 
+- then merging gets messy and they'll hate you.
+
+#>
+
+# create a file, 
+# commit and push
+ni rebase-perils.txt -t f
+git add rebase-perils.txt; 
+git commit -m "Add file."
+git push
+
+# to mimic collaborating, 
+# clone the current repo into a sibling directory
+git clone git@github.com:bigfont/gitbook-posh.git ..\gitbook-posh2
+cd ..\gitbook-posh2
+
