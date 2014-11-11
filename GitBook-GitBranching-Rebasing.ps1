@@ -1,4 +1,4 @@
-
+ 
 # Rebasing is one of the two methods
 # for integrating changes from one branch into another.
 # Merging and rebasing lead to the same snapshot result;
@@ -94,5 +94,43 @@ git add server.txt
 git commit -m "C10"
 
 # review the log to see where we are
-git log --oneline --graph --all -10
+git log --oneline --graph --all -12
 
+# git rebase --onto <newbase> <upstream> <branch>
+git rebase --onto master server client
+
+<# 
+
+ 1. checkout <branch>
+ 2. temp save changes made by commits in <branch> that aren't in <upstream>
+ 3. reset the current branch to <newbase>
+ 4. apply the temp saved changes to <newbase> in order, one-by-one
+
+Take the changes on the client branch
+that are not on the server branch
+and replay them onto master.
+
+#>
+
+# notice that master is now behind HEAD
+git log --oneline --graph --all --decorate -12
+
+# so we need to fast forward
+git checkout master
+git merge client
+
+# git rebase <base> <topic>
+git rebase master server
+
+<#
+
+Rebase the topic branch onto the base branch
+without having to checkout the topic first.
+
+1. checkout the topic branch
+2. play it back onto the base branch
+
+#>
+
+git checkout master
+git merge server
