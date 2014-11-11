@@ -1,4 +1,4 @@
-
+ 
 # Rebasing is one of the two methods
 # for integrating changes from one branch into another.
 # Merging and rebasing lead to the same snapshot result;
