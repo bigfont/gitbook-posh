@@ -14,13 +14,20 @@ git add -i
 
 <#
 
-status
-update, choose files to stage
-revert, choose files to unstage
-add untracked
-patch
-diff, choose files to view staged diff
+status,          show what's currently staged
+update,          choose files to stage
+revert,          choose files to unstage
+add untracked,   choose untracked files to stage
+patch,           stage specific hunks (harder if untracked)
+diff,            view --cached diffs of specific files
 quit
-help 
+help
+
+related
+`git add -p`
+`git add --patch`
+`git reset --patch`
+`git checkout --patch`
+`git stash save --patch`
 
 #>
