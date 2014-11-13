@@ -105,6 +105,7 @@ git rebase --onto master server client
  2. temp save changes made by commits in <branch> that aren't in <upstream>
  3. reset the current branch to <newbase>
  4. apply the temp saved changes to <newbase> in order, one-by-one
+<<<<<<< HEAD
 
 Take the changes on the client branch
 that are not on the server branch
