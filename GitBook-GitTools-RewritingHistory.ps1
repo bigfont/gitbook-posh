@@ -1,6 +1,5 @@
 git commit --amend
 -avoid if you've already pushed
-<<<<<<< HEAD
 -change the commit message, or
 -change the snapshot with `add` or `rm`
 -warning: is a mini-rebase, changes the SHA
