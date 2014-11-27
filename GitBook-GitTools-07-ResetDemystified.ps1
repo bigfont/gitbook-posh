@@ -75,4 +75,4 @@
 - there are 3 important differences
 1. checkout moves HEAD, reset moves the HEAD branch
 2. checkout always updates the index & working tree, reset is more flexible
-3. checkout is 'working directory safe'; it will not overwrite a dirty WD
+3. checkout is WD safe without a path, reset is WD safe with a path
