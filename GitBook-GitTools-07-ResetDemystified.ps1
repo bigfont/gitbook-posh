@@ -52,4 +52,27 @@
 
 # Reset with a Path
 
-- 
+- skips step (1)
+- i.e. does not move the branch that HEAD points to
+- the proceeds with step 2 and 3
+- ergo, `git reset HEAD file.txt` unstages the file
+- and `git reset 23d43d5 file.txt` adds the file from that commit to the index
+
+# Squashing with reset
+
+- do some work and commit1
+- do some work and commit2
+- do some work and commit3
+- squash
+-- `git reset --soft HEAD~2` # move branch that HEAD points to
+-- `git commit -m "commit4" # commit the current index :-)
+
+    commit
+    commit4 (HEAD)
+    
+# Test: checkout vs reset
+
+- there are 3 important differences
+1. checkout moves HEAD, reset moves the HEAD branch
+2. checkout always updates the index & working tree, reset is more flexible
+3. checkout is 'working directory safe'; it will not overwrite a dirty WD
