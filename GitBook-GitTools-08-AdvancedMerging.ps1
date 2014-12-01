@@ -4,6 +4,10 @@
 
 # merge conflicts
 
-1. commit or stash work in progress
-- i.e. start with a clean working dir
-- this lets us undo *anything* we do
+1. create ruby file with initial content
+2. commit in master
+3. switch to whitespace
+4. convert from unix to dos
+5. commit
+6. change world to mondo
+7. commit
