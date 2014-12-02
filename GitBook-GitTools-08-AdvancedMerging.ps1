@@ -8,7 +8,7 @@
 
 git config --local core.autocrlf false
 
-1. create ruby file with initial content
+1. create ruby file with content
 2. commit in master
 3. switch to whitespace
 4. convert from dos 2 unix (*)
