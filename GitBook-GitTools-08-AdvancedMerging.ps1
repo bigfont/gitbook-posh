@@ -24,12 +24,28 @@ git config --local core.autocrlf false
 
 ## aborting a merge
 
-- `git merge --abort`
-- we can only do this w/ a clean working dir
+- `git status -sb` // short, branch
+-- inspect, then either
+
+- `git merge --abort` // this is WD safe
+-- or
+
+- `git reset --hard HEAD` // this is not WD safe
 
 ## ignoring whitespace
 
+- `git merge -Xignore-all-space` // ignore all WS
+- `git merge -Xignore-space-change` // [\s] == [\s+]
+
 ## manual file re-merging
+
+- stage1, common ancestor
+- stage2, yours
+- stage3, theirs
+- `git show :1:fileName.ext`
+- `git show :2:fileName.ext`
+- `git show :3:fileName.ext`
+
 
 ## checking out conflicts
 
