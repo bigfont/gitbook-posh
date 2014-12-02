@@ -61,6 +61,8 @@ git config --local core.autocrlf false
 
 ### doing a manual merge
 
+(I didn't get this to work b/c of git interprets the files as binary) 
+
 - `git show :1:simple.rb > simple.common.rb`
 - `git show :2:simple.rb > simple.ours.rb`
 - `git show :3:simple.rb > siple.theirs.rb`
