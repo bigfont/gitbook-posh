@@ -71,6 +71,11 @@ git config --local core.autocrlf false
 
 ## checking out conflicts
 
+(This appears to work only in git 2.0, which is not available in myGit as of 02 Dec 2014)
+
+- `git checkout --conflict=diff3|merge <fileName>`
+
+
 ## merge log
 
 ## combined diff format
