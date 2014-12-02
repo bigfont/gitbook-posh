@@ -8,7 +8,7 @@
 
 git config --local core.autocrlf false
 
-1. create ruby file with initial content
+1. create ruby file with content
 2. commit in master
 3. switch to whitespace
 4. convert from dos 2 unix (*)
@@ -19,8 +19,13 @@ git config --local core.autocrlf false
 9. document the ruby
 0. commit on master
 1. try to merge in whitespace to master
+2. PROBLEM :-)
+
 
 ## aborting a merge
+
+- `git merge --abort`
+- we can only do this w/ a clean working dir
 
 ## ignoring whitespace
 
