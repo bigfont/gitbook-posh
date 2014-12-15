@@ -1,0 +1,3 @@
+[submodule "WindowsPowerShell"]
+	path = WindowsPowerShell
+	url = https://github.com/bigfont/WindowsPowerShell.git
