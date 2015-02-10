@@ -1,6 +1,6 @@
 # The Basic Rebase (p 114)
 
-- [rebase places the branches commits *onto* the common ancestor]
+- [rebase places the current branch's commits *on top of* a target branch's most recent commit]
 
 - integrate changes from one branch into another
 - whereas merging creates a new commit with two ancestors
