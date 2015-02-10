@@ -1,0 +1,4 @@
+# More Interesting Rebases
+
+- playback onto something other than a target branch
+- 
