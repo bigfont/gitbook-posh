@@ -1,0 +1,14 @@
+git init
+
+git status
+git add
+git commit
+git reset [--soft|--mixed|--hard]
+git checkout
+
+git remote [add|--verbose|show]
+git fetch
+git branch [--set-upstream-to]
+git merge
+git rebase
+git pull
