@@ -1,0 +1,32 @@
+# The Basic Rebase (p 114)
+
+- [rebase places the current branch's commits *on top of* a target branch's most recent commit]
+
+- integrate changes from one branch into another
+- whereas merging creates a new commit with two ancestors
+
+    `git merge experiment`
+
+- rebase does five things: 
+
+    `git rebase master`
+    `git checkout master`
+    `git merge experiment`
+
+    1. go to the common ancestor
+    2. get the diff introduced by each (n) commits on the current branch
+    3. save each diff to temp files
+    4. reset the current branch to the same commit as the target branch???
+    5. apply each change in turn, moving forward the current branch
+    * ergo, the current branch will be (n) commits ahead of the target branch.
+    * at this point, you can fast forward merge the target branch
+    
+- result: 
+    - exact same snapshot as merge method
+    - exact same number of commits in the history
+    - different history path: linear not branched
+    
+- when to use: 
+    - before pushing to a remote repo you don't maintain
+    - that way the maintainer can just do a fast forward merge
+    
